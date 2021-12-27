@@ -21,10 +21,6 @@ class App extends React.Component {
     });
   }
 
-
-  //need two different methods. 1) loop over each object key(description) value and find the matching description's index. 2) Use that index to change status to true. 
-
-
   completeTask = (input) => {
     const copyTodo = [...this.state.toDoListItems]
     for (let i = 0; i < copyTodo.length; i++) {
@@ -69,10 +65,26 @@ class App extends React.Component {
             {
               this.state.toDoListItems.map((input) => {
                 return (
-                  <li onClick={() => {
-                    this.completeTask(input)
-                  }
-                  }><input type="checkbox" />{input.description}</li>
+                  <li
+                    style={{
+                      textDecoration: 'line-through'
+                    }}
+                    onClick={
+                      () => {
+                        this.completeTask(input)
+                      }
+                    }
+                  >
+                    <input
+                      type="checkbox"
+                      onClick={
+                        () => {
+                          this.completeTask(input)
+                        }
+                      }
+                    />
+                    {input.description}
+                  </li>
                 )
               })
             }
