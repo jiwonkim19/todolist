@@ -66,9 +66,6 @@ class App extends React.Component {
               this.state.toDoListItems.map((input) => {
                 return (
                   <li
-                    style={{
-                      textDecoration: input.status ? 'line-through' : null
-                    }}
                     onClick={
                       () => {
                         this.completeTask(input)
@@ -77,9 +74,11 @@ class App extends React.Component {
                   >
                     <input
                       type="checkbox"
-                      onClick={
-                        () => {
-                          this.completeTask(input)
+                      checked={input.status}
+                      onChange={
+                        (e) => {
+                          // e.preventDefault()
+                          // this.completeTask(input)
                         }
                       }
                     />
