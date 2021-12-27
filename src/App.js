@@ -67,7 +67,7 @@ class App extends React.Component {
                 return (
                   <li
                     style={{
-                      textDecoration: 'line-through'
+                      textDecoration: input.status ? 'line-through' : null
                     }}
                     onClick={
                       () => {
