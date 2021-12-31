@@ -4,6 +4,7 @@ import './App.css';
 import { getByPlaceholderText, render } from "@testing-library/react";
 import React from 'react';
 
+
 class App extends React.Component {
   constructor(props) {
     super(props);
@@ -13,8 +14,9 @@ class App extends React.Component {
     }
     this.handleChange = this.handleChange.bind(this)
     this.completeTask = this.completeTask.bind(this)
+    this.removeTask = this.removeTask.bind(this)
   }
-
+ 
   handleChange = (event) => {
     this.setState({
       taskInput: event.target.value
@@ -33,10 +35,35 @@ class App extends React.Component {
     })
   }
 
+  removeTask = (index) => {
+    const todoCopy = [...this.state.toDoListItems]
+    todoCopy.splice(index, 1)
+    this.setState({
+      toDoListItems: todoCopy
+    })
+  }
 
   render() {
+    const response = fetch('http://localhost:3001/listItems')
+    .then(resp => {
+      return resp.json()
+    })
+    .then(resp => {
+      console.log(resp)
+    })
+
+    
     return (
-      <div>
+      <div
+        style={{
+          textAlign: "center",
+          maxWidth: "950px",
+          margin: "0 auto",
+          border: "1px solid #e6e6e6",
+          padding: "40px 25px",
+          marginTop: "50px"
+        }}
+      >
         <h1> To Do List</h1>
         <h2>
           <form id="newText">
@@ -61,33 +88,38 @@ class App extends React.Component {
           </form>
         </h2>
         <h2>
-          <ul>
+          <ol>
             {
-              this.state.toDoListItems.map((input) => {
+              this.state.toDoListItems.map((input, index) => {
                 return (
-                  <li
-                    onClick={
-                      () => {
-                        this.completeTask(input)
-                      }
-                    }
-                  >
-                    <input
-                      type="checkbox"
-                      checked={input.status}
-                      onChange={
-                        (e) => {
-                          // e.preventDefault()
-                          // this.completeTask(input)
+                  <div>
+                    <li
+                      onClick={
+                        () => {
+                          this.completeTask(input)
                         }
                       }
-                    />
-                    {input.description}
-                  </li>
+                    >
+                      {input.description}
+                      <input
+                        type="checkbox"
+                        checked={input.status}
+                      />
+                    </li>
+
+                    <input
+                      type="button"
+                      onClick={
+                        () => {
+                          this.removeTask(index)
+                        }
+                      } />
+                  </div>
                 )
+
               })
             }
-          </ul>
+          </ol>
         </h2>
       </div>
     )
