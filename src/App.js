@@ -16,7 +16,7 @@ class App extends React.Component {
     this.completeTask = this.completeTask.bind(this)
     this.removeTask = this.removeTask.bind(this)
   }
- 
+
   handleChange = (event) => {
     this.setState({
       taskInput: event.target.value
@@ -43,22 +43,16 @@ class App extends React.Component {
     })
   }
   componentDidMount() {
-    const resp = [
-      { description: 'im here', status: false}
-    ]
-    this.setState({toDoListItems: resp})
+    fetch('http://localhost:3004/listItems')
+      .then(resp => {
+        return resp.json()
+      })
+      .then(resp => {
+        this.setState({ toDoListItems: resp })
+      })
   }
 
   render() {
-    const response = fetch('http://localhost:3001/listItems')
-    .then(resp => {
-      return resp.json()
-    })
-    .then(resp => {
-      console.log(resp)
-    })
-
-    
     return (
       <div
         style={{
@@ -85,6 +79,13 @@ class App extends React.Component {
                 e.preventDefault()
                 this.setState({
                   toDoListItems: [...this.state.toDoListItems, { status: false, description: this.state.taskInput }]
+                })
+                 fetch('http://localhost:3004/items', {
+                  method: 'POST',
+                  headers: {"Content-Type": "application/json"},
+                  body: JSON.stringify({ status: false, description: this.state.taskInput })
+                }).then(() => {
+                  console.log('task added to DB')
                 })
               }
               }
