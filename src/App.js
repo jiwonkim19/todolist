@@ -42,6 +42,12 @@ class App extends React.Component {
       toDoListItems: todoCopy
     })
   }
+  componentDidMount() {
+    const resp = [
+      { description: 'im here', status: false}
+    ]
+    this.setState({toDoListItems: resp})
+  }
 
   render() {
     const response = fetch('http://localhost:3001/listItems')
