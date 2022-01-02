@@ -42,6 +42,7 @@ class App extends React.Component {
       toDoListItems: todoCopy
     })
   }
+
   componentDidMount() {
     fetch('http://localhost:3004/listItems')
       .then(resp => {
@@ -119,6 +120,13 @@ class App extends React.Component {
                       onClick={
                         () => {
                           this.removeTask(index)
+                          fetch('http://localhost:3004/items', {
+                            method: 'DELETE',
+                            headers: { "Content-Type": "application/json" },
+                            body: JSON.stringify({index})
+                          }).then(() => {
+                            console.log('task deleted')
+                          })
                         }
                       } />
                   </div>
