@@ -120,7 +120,7 @@ class App extends React.Component {
                           fetch('http://localhost:3004/items', {
                             method: 'DELETE',
                             headers: { "Content-Type": "application/json" },
-                            body: JSON.stringify({ index })
+                            body: JSON.stringify({ input })
                           }).then(() => {
                             console.log('task deleted')
                           })
