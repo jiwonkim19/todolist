@@ -1,6 +1,3 @@
-import logo from './logo.svg';
-import './App.css';
-
 import { getByPlaceholderText, render } from "@testing-library/react";
 import React from 'react';
 
@@ -20,7 +17,7 @@ class App extends React.Component {
   handleChange = (event) => {
     this.setState({
       taskInput: event.target.value
-    });
+    })
   }
 
   completeTask = (input) => {
@@ -44,7 +41,7 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-    fetch('http://localhost:3004/listItems')
+    fetch('http://localhost:3004/items')
       .then(resp => {
         return resp.json()
       })
@@ -81,9 +78,9 @@ class App extends React.Component {
                 this.setState({
                   toDoListItems: [...this.state.toDoListItems, { status: false, description: this.state.taskInput }]
                 })
-                 fetch('http://localhost:3004/items', {
+                fetch('http://localhost:3004/items', {
                   method: 'POST',
-                  headers: {"Content-Type": "application/json"},
+                  headers: { "Content-Type": "application/json" },
                   body: JSON.stringify({ status: false, description: this.state.taskInput })
                 }).then(() => {
                   console.log('task added to DB')
@@ -123,7 +120,7 @@ class App extends React.Component {
                           fetch('http://localhost:3004/items', {
                             method: 'DELETE',
                             headers: { "Content-Type": "application/json" },
-                            body: JSON.stringify({index})
+                            body: JSON.stringify({ index })
                           }).then(() => {
                             console.log('task deleted')
                           })
@@ -140,4 +137,4 @@ class App extends React.Component {
     )
   }
 }
-export default App;
+export default App
