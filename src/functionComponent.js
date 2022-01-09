@@ -1,29 +1,42 @@
 import React, { useEffect, useState } from 'react';
+import { createContext, useContext } from 'react';
+
+const Context = createContext('default')
+const ItemsArray = () => {
+    const [list, setList] = useState({ toDoListItems:[] })
+    return (
+        <Context.Provider value={[list,setList]}>
+            <MyComponent />
+        </Context.Provider>
+    )
+}
 
 const MyComponent = () => {
-    const [entry, setEntry] = useState({ taskInput: '', toDoListItems: [] })
+    const [entry, setEntry] = useState({ taskInput: ''})
     
+    const [list, setList] = useContext(Context);
+
     const handleChange = (event) => {
         setEntry({...entry, taskInput: event.target.value})
     }
 
     const completeTask = (input) => {
-        const copyTodo = [entry.toDoListItems]
+        const copyTodo = [...list.toDoListItems]
         for (let i = 0; i < copyTodo.length; i++) {
             if (copyTodo[i].description === input.description) {
                 copyTodo[i].status = !copyTodo[i].status
             }
         }
-        setEntry({
-            ...entry, toDoListItems: copyTodo
+        setList({
+            ...list, toDoListItems: copyTodo
         })
     }
 
     const removeTask = (index) => {
-        const todoCopy = [entry.toDoListItems]
+        const todoCopy = [...list.toDoListItems]
         todoCopy.splice(index, 1)
-        setEntry({
-          ...entry, toDoListItems: todoCopy
+        setList({
+          ...list, toDoListItems: todoCopy
         })
       }
     
@@ -33,11 +46,10 @@ const MyComponent = () => {
                 return resp.json()
             })
             .then(resp => {
-                setEntry({ ...entry, toDoListItems: resp })
+                setList({ ...list, toDoListItems: resp })
             })
     }
     )
-
     
     return (
         <>
@@ -57,15 +69,15 @@ const MyComponent = () => {
             <input
               type="text"
               placeholder="Enter task..."
-              value={entry.toDoDescription}
+              value={list.toDoDescription}
               onChange={handleChange}
             />
             <button
               type="submit"
               onClick={(e) => {
                 e.preventDefault()
-                setEntry({
-                  ...entry, toDoListItems: [...entry.toDoListItems, { status: false, description: entry.taskInput }]
+                setList({
+                  ...list, toDoListItems: [...list.toDoListItems, { status: false, description: entry.taskInput }]
                 })
                 fetch('http://localhost:3004/items', {
                   method: 'POST',
@@ -84,7 +96,7 @@ const MyComponent = () => {
         <h2>
           <ol>
             {
-              entry.toDoListItems.map((input, index) => {
+              list.toDoListItems.map((input, index) => {
                 return (
                   <div>
                     <li
@@ -127,4 +139,4 @@ const MyComponent = () => {
     )
 }
 
-export default MyComponent
+export default ItemsArray
