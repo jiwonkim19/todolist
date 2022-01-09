@@ -1,0 +1,8 @@
+Key Bindings:
+Terminal:
+    Open Next External Terminal = Ctrl + Shift + C 
+    Create New Terminal = Ctrl + Terminal
+    Focus Next Terminal Group = Ctrl + PageDown
+    Focus Next Terminal in Terminal Group = Alt + DownArrow
+    Toggle Maxmized Panel = Ctrl + cmd + enter
+

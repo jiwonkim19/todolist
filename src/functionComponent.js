@@ -1,56 +1,47 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
-class ClassComponent extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      taskInput: '',
-      toDoListItems: []
+const MyComponent = () => {
+    const [entry, setEntry] = useState({ taskInput: '', toDoListItems: [] })
+    
+    const handleChange = (event) => {
+        setEntry({...entry, taskInput: event.target.value})
     }
-    this.handleChange = this.handleChange.bind(this)
-    this.completeTask = this.completeTask.bind(this)
-    this.removeTask = this.removeTask.bind(this)
-  }
 
-  handleChange = (event) => {
-    this.setState({
-      taskInput: event.target.value
-    })
-  }
+    const completeTask = (input) => {
+        const copyTodo = [entry.toDoListItems]
+        for (let i = 0; i < copyTodo.length; i++) {
+            if (copyTodo[i].description === input.description) {
+                copyTodo[i].status = !copyTodo[i].status
+            }
+        }
+        setEntry({
+            ...entry, toDoListItems: copyTodo
+        })
+    }
 
-  completeTask = (input) => {
-    const copyTodo = [...this.state.toDoListItems]
-    for (let i = 0; i < copyTodo.length; i++) {
-      if (copyTodo[i].description === input.description) {
-        copyTodo[i].status = !copyTodo[i].status
+    const removeTask = (index) => {
+        const todoCopy = [entry.toDoListItems]
+        todoCopy.splice(index, 1)
+        setEntry({
+          ...entry, toDoListItems: todoCopy
+        })
       }
+    
+    useEffect(() => {
+        fetch('http://localhost:3004/items')
+            .then(resp => {
+                return resp.json()
+            })
+            .then(resp => {
+                setEntry({ ...entry, toDoListItems: resp })
+            })
     }
-    this.setState({
-      toDoListItems: copyTodo
-    })
-  }
+    )
 
-  removeTask = (index) => {
-    const todoCopy = [...this.state.toDoListItems]
-    todoCopy.splice(index, 1)
-    this.setState({
-      toDoListItems: todoCopy
-    })
-  }
-
-  componentDidMount() {
-    fetch('http://localhost:3004/items')
-      .then(resp => {
-        return resp.json()
-      })
-      .then(resp => {
-        this.setState({ toDoListItems: resp })
-      })
-  }
-
-  render() {
+    
     return (
-      <div
+        <>
+        <div
         style={{
           textAlign: "center",
           maxWidth: "950px",
@@ -60,26 +51,26 @@ class ClassComponent extends React.Component {
           marginTop: "50px"
         }}
       >
-        <h1> FART List</h1>
+        <h1> Todo List</h1>
         <h2>
           <form id="newText">
             <input
               type="text"
               placeholder="Enter task..."
-              value={this.state.toDoDescription}
-              onChange={this.handleChange}
+              value={entry.toDoDescription}
+              onChange={handleChange}
             />
             <button
               type="submit"
               onClick={(e) => {
                 e.preventDefault()
-                this.setState({
-                  toDoListItems: [...this.state.toDoListItems, { status: false, description: this.state.taskInput }]
+                setEntry({
+                  ...entry, toDoListItems: [...entry.toDoListItems, { status: false, description: entry.taskInput }]
                 })
                 fetch('http://localhost:3004/items', {
                   method: 'POST',
                   headers: { "Content-Type": "application/json" },
-                  body: JSON.stringify({ status: false, description: this.state.taskInput })
+                  body: JSON.stringify({ status: false, description: entry.taskInput })
                 }).then(() => {
                   console.log('task added to DB')
                 })
@@ -93,13 +84,13 @@ class ClassComponent extends React.Component {
         <h2>
           <ol>
             {
-              this.state.toDoListItems.map((input, index) => {
+              entry.toDoListItems.map((input, index) => {
                 return (
                   <div>
                     <li
                       onClick={
                         () => {
-                          this.completeTask(input)
+                          completeTask(input)
                         }
                       }
                     >
@@ -114,7 +105,7 @@ class ClassComponent extends React.Component {
                       type="button"
                       onClick={
                         () => {
-                          this.removeTask(index)
+                          removeTask(index)
                           fetch('http://localhost:3004/items', {
                             method: 'DELETE',
                             headers: { "Content-Type": "application/json" },
@@ -132,8 +123,8 @@ class ClassComponent extends React.Component {
           </ol>
         </h2>
       </div>
+        </>
     )
-  }
 }
 
-export default ClassComponent
+export default MyComponent

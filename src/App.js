@@ -1,13 +1,13 @@
 import { getByPlaceholderText, render } from "@testing-library/react";
 import React from 'react';
 
-import ClassComponent from './classComponent'
+import MyComponent from "./functionComponent";
 
 class App extends React.Component {
   render() {
     return (
-      <ClassComponent/>
+      <MyComponent/>
     )
-  }
+}
 }
 export default App
