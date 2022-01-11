@@ -1,12 +1,12 @@
 import { getByPlaceholderText, render } from "@testing-library/react";
 import React from 'react';
 
-import ItemsArray from "./functionComponent";
+import TodoList from "./TodoList";
 
 class App extends React.Component {
   render() {
     return (
-      <ItemsArray/>
+      <TodoList/>
     )
 }
 }
