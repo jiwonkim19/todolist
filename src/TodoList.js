@@ -48,25 +48,11 @@ const reducer = (state, action) => {
 
 const TodoList = () => {
     const [entry, setEntry] = useState('')
-
-    const [state, dispatch] = useReducer(reducer, initialState);
+    const [state, dispatch] = useReducer(reducer, initialState)
 
     const handleChange = (event) => {
         setEntry(event.target.value)
     }
-
-    // const completeTask = (input) => {
-    //     const copyTodo = [...list]
-    //     for (let i = 0; i < copyTodo.length; i++) {
-    //         if (copyTodo[i].description === input.description) {
-    //             copyTodo[i].status = !copyTodo[i].status
-    //         }
-    //     }
-    //     setList({
-    //         ...list, toDoListItems: copyTodo
-    //     })
-    // }
-
 
     return (
         <>
