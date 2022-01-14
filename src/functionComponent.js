@@ -1,14 +1,8 @@
 import React, { useEffect, useState } from 'react';
 
 const MyComponent = () => {
-  const [entry, setEntry] = useState({ taskInput: ''});
-  const [list, setList] = useState({ toDoListItems:[] });
-
-  const handleChange = (event) => {
-    setEntry({
-      taskInput: event.target.value
-    })
-  }
+  const [entry, setEntry] = useState('');
+  const [list, setList] = useState([]);
 
   const completeTask = (input) => {
     const copyTodo = [...list.toDoListItems]
@@ -36,10 +30,9 @@ const MyComponent = () => {
         return resp.json()
       })
       .then(resp => {
-        setList({toDoListItems: resp })
+        setList(resp)
       })
-  }
-  )
+  }, [])
 
   return (
     <div
@@ -58,25 +51,29 @@ const MyComponent = () => {
           <input
             type="text"
             placeholder="Enter task..."
-            value={list.toDoDescription}
-            onChange={handleChange}
+            value={entry}
+            onChange={
+              () => setEntry(event.target.value)
+            }
           />
           <button
             type="submit"
-            onChange={(e) => {
+            onClick={(e) => {
               e.preventDefault()
-              setList({
-                toDoListItems: [...list.toDoListItems, { task: entry.taskInput, status: false }]
-              })
+              setList(
+                [
+                  ...list,
+                  { task: entry, status: false }
+                ]
+              )
               fetch('http://localhost:3005/items', {
                 method: 'POST',
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ task: entry.taskInput, status: false })
+                body: JSON.stringify({ task: entry, status: false })
               }).then(() => {
                 console.log('task added to DB')
               })
-            }
-            }
+            }}
           >
             +
           </button>
@@ -85,9 +82,9 @@ const MyComponent = () => {
       <h2>
         <ol>
           {
-            list.toDoListItems.map((input, index) => {
+            list.map((input, index) => {
               return (
-                <div>
+                <div key={index}>
                   <li
                     onClick={
                       () => {
@@ -134,4 +131,4 @@ const MyComponent = () => {
   )
 }
 
-export default MyComponent 
+export default MyComponent
