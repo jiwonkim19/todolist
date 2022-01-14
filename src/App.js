@@ -1,12 +1,12 @@
 import { getByPlaceholderText, render } from "@testing-library/react";
 import React from 'react';
 
-import TodoList from "./TodoList";
+import MyComponent from "./functionComponent";
 
 class App extends React.Component {
   render() {
     return (
-      <TodoList/>
+      <MyComponent/>
     )
 }
 }
