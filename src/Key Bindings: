@@ -6,3 +6,23 @@ Terminal:
     Focus Next Terminal in Terminal Group = Alt + DownArrow
     Toggle Maxmized Panel = Ctrl + cmd + enter
 
+Ctrl + P command center:
+    ">" = all commands in a dropdown menu
+    "@" = variables and callbacks
+    "#"
+
+Quokka + runs javascript on the file (extension to use in future?)
+
+Highlighting and Moving:
+Ctrl + G = Go to line number
+shift + <--/--> = highlighting the line
+ctrl + <--/--> = moving word by word
+ctrl + shift + <--/--> = highight and move word by word
+Ctrl + D to highlight = highlighting the word in multiple lines
+
+Etc:
+Ctrl + X = Cut entire line and copy it 
+Alt + up/down = "move the line up and down"
+Alt + shift + up/down = "move & copy"
+
+ 
